@@ -16,7 +16,15 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+
     server: {
+        host: '0.0.0.0',     // ← OBBLIGATORIO in Docker
+        port: 5173,          // ← Forziamo la porta corretta
+        strictPort: true,    // ← Non usare porte alternative
+        hmr: {
+            host: 'localhost', // ← Forza IPv4
+            port: 5173,
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
