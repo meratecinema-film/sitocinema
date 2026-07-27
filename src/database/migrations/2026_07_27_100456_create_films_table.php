@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('description')->nullable();
             $table->string('poster')->nullable();
-            $table->foreignId('showtype_id')->constrained('showtypes')->nullOnDelete();
+            $table->foreignId('eventtype_id')->constrained('eventtypes')->onDelete('no action');
             $table->string('trailer')->nullable();
             $table->string('year')->nullable();
             $table->date('visible_from')->nullable();
+            $table->date('visible_until')->nullable();
+            $table->integer('duration')->nullable();
         });
     }
 
