@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'CineTeatro Manzoni Merate') }}</title>
+    <title>Cineteatro Manzoni Merate - @yield('title')</title>
+
+    <!-- TBD -->
+    <meta property="og:title" content="Cineteatro Manzoni Merate" />
+    <meta property="og:image" content={{ asset('/logo.png') }} />
+    <meta property="og:logo" content={{ asset('/favicon.ico') }} />
+
 
     {{-- Font --}}
     @fonts
 
     {{-- Vite: CSS + JS --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/bootstrap.css', 'resources/css/reset.css', 'resources/css/custom.css', 'resources/css/layout.css', 'resources/js/app.js'])
 </head>
 
 <body>
 
-    {{-- SIDEBAR (nel partial navbar) --}}
-    @include('partials.navbar')
+    <div class="page-template">
+        <div class="content | wrapper">
+            {{-- HEADER / NAVBAR --}}
+            <div class="header-slot">
+                @include('partials.header')
+            </div>
 
-    {{-- HEADER --}}
-    <header class="my-4" style="padding-left:260px;">
-        @include('partials.header')
-    </header>
+            {{-- CONTENUTO PRINCIPALE --}}
+            <main>
+                @yield('content')
+            </main>
+        </div>
 
-    {{-- CONTENUTO PRINCIPALE --}}
-    <main class="my-4" style="padding-left:260px;">
-        @yield('content')
-    </main>
-
-    {{-- FOOTER --}}
-    <footer class="text-center my-5" style="padding-left:260px;">
-        @include('partials.footer')
-    </footer>
+        {{-- FOOTER --}}
+        <div class="footer-slot">
+            <div class="wrapper">
+                @include('partials.footer')
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>

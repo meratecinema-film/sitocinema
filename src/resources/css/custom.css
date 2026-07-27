@@ -1,0 +1,263 @@
+:root {
+    /* SPACING */
+    --size-1: 4px;
+    --size-2: 8px;
+    --size-3: 16px;
+    --size-4: 24px;
+    --size-5: 32px;
+    --size-6: 40px;
+    --size-7: 48px;
+    --size-8: 64px;
+
+    --clr-neutral-200: #f5f5f5;
+    --clr-accent: #0079bb;
+    accent-color: var(--clr-accent);
+
+    /*--fs-small: 0.875rem;*/
+    --fs-small: 1rem;
+    --fs-normal: 1.125rem;
+
+    /* override Bootstrap variables */
+    --bs-font-sans-serif: "Afacad Flux", sans-serif;
+    --bs-body-font-family: "Afacad Flux", sans-serif;
+    --bs-body-line-height: 1.35;
+}
+
+body {
+    font-family: "Afacad Flux", sans-serif;
+    font-size: round(clamp(1rem, calc(0.943rem + 0.284vw), 1.125rem), 1px);
+}
+
+/* TYPOGRAPHY */
+h1,
+.h1 {
+    font-size: round(clamp(2.25rem, calc(1.769rem + 1.923vw), 3rem), 2px);
+    font-weight: 400;
+    margin-block-end: 0.5em;
+}
+
+h2,
+.h2 {
+    font-size: round(clamp(1.5rem, calc(1.33rem + 0.852vw), 1.875rem), 2px);
+    font-weight: normal;
+}
+
+label,
+.text-small {
+    font-size: var(--fs-small);
+}
+
+a {
+    color: var(--clr-accent);
+}
+
+main p {
+    line-height: 1.5;
+}
+
+*:focus-visible {
+    outline-offset: 5px;
+    outline-color: var(--clr-accent);
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.text-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--size-1);
+    padding-block: 0.5em;
+    background-color: transparent;
+    border: none;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus-visible {
+        color: var(--clr-accent);
+    }
+
+    svg {
+        height: 1em;
+        width: 1em;
+    }
+}
+
+
+/** UTILS */
+.wrapper {
+    width: min(1440px, 100%);
+    margin-inline: auto;
+}
+
+.content-wrapper {
+    max-width: 72ch;
+}
+
+/** HEADER */
+header {
+    /*padding: var(--size-4);*/
+    font-size: var(--fs-small);
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        transition: color ease-in-out 75ms;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--clr-accent);
+        }
+    }
+
+    nav > ul {
+        display: grid;
+        gap: var(--size-3);
+        list-style: none;
+        padding: 0;
+        text-align: end;
+    }
+}
+
+/** FOOTER */
+footer {
+    font-size: var(--fs-small);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-3) var(--size-8);
+
+    .credits {
+        margin-block-start: var(--size-1);
+    }
+
+    .social {
+        display: flex;
+        gap: var(--size-2);
+        margin-block-start: var(--size-2);
+
+        img {
+            width: 18px;
+        }
+    }
+}
+
+/** HOME / LOCANDINA */
+.events {
+    --max-col-width: 375px;
+    display: grid;
+    gap: var(--size-6);
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, var(--max-col-width)), 1fr)
+    );
+
+    container-type: inline-size;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: clamp(170px, calc(70px + 15cqi), 250px) 1fr;
+    gap: var(--size-3);
+
+    @container (width < 320px) {
+        grid-template-columns: 1fr;
+        gap: var(--size-2);
+        margin-block-end: var(--size-3);
+    }
+
+    .image-container {
+        text-align: center;
+
+        .wannabe-image {
+            aspect-ratio: 200 / 285;
+            background-color: aquamarine;
+        }
+
+        .link {
+            display: inline-block;
+            margin-block-start: var(--size-1);
+        }
+    }
+
+    .info {
+        .tag {
+            font-size: var(--fs-small);
+            opacity: 0.8;
+        }
+
+        .day {
+            margin-block-start: var(--size-3);
+        }
+
+        .day:first-of-type {
+            margin-block-start: var(--size-4);
+        }
+
+        .day > p:first-child {
+            font-weight: 700;
+        }
+
+        .day p {
+            line-height: 1.2;
+        }
+    }
+}
+
+/** TICKET and PROMO PAGE  */
+.tickets {
+    margin-block: var(--size-3);
+
+    .ticket-line {
+        display: flex;
+        width: min(100%, 320px);
+        justify-content: space-between;
+        align-items: center;
+    }
+    .label {
+        flex-basis: 70%;
+    }
+}
+
+.promo {
+    margin-block-start: var(--size-4);
+}
+
+.promo-fidaty {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--size-2);
+    align-items: center;
+    justify-content: center;
+
+    :not(img) {
+        flex: 1;
+        flex-basis: 220px;
+    }
+
+    img {
+        width: 200px;
+    }
+}
+
+/** CONTACT PAGE  */
+.contact-social-list {
+    display: flex;
+    gap: var(--size-4);
+    margin-block-start: var(--size-2);
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: var(--size-1);
+    }
+
+    img {
+        display: block;
+        width: 20px;
+    }
+}

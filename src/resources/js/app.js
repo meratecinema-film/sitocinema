@@ -1,51 +1,36 @@
 // ============================================================
 //  Bootstrap
 // ============================================================
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap";
 
 // ============================================================
 //  Sidebar Hamburger Script
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("load", () => manageMenu());
 
-    const sidebar = document.getElementById('sidebar');
-    const btn = document.getElementById('hamburger-btn');
+function manageMenu() {
 
-    // Se sidebar o hamburger non esistono, esci
-    if (!sidebar || !btn) return;
-
-    // Apri/chiudi sidebar
-    btn.addEventListener('click', () => {
-        sidebar.classList.toggle('show');
-    });
-
-    // Chiudi sidebar quando si clicca fuori (solo mobile)
-    document.addEventListener('click', (event) => {
-        const isClickInsideSidebar = sidebar.contains(event.target);
-        const isClickOnButton = btn.contains(event.target);
-
-        if (!isClickInsideSidebar && !isClickOnButton && sidebar.classList.contains('show')) {
-            sidebar.classList.remove('show');
+    const backdropCloseListener = (e) => {
+        if (e.target && e.target.tagName === "BODY") {
+            closeMenu();
         }
-    });
+    };
 
-    // Chiudi sidebar con ESC
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && sidebar.classList.contains('show')) {
-            sidebar.classList.remove('show');
-        }
-    });
+    const openMenu = () => {
+        nav.classList.add("open");
+        document.body.addEventListener("click", backdropCloseListener);
+    };
 
-    // Chiudi sidebar quando si clicca un link (solo mobile)
-    const links = sidebar.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 992) {
-                sidebar.classList.remove('show');
-            }
-        });
-    });
+    const closeMenu = () => {
+        nav.classList.remove("open");
+        document.body.removeEventListener("click", backdropCloseListener);
+    };
 
-});
+    const menuBtn = document.getElementById("open-menu-btn");
+    const closeBtn = document.getElementById("close-menu-btn");
+    const nav = document.getElementById("menu-bar");
+
+    closeBtn.addEventListener("click", () => closeMenu());
+    menuBtn.addEventListener("click", () => openMenu());
+}

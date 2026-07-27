@@ -1,15 +1,14 @@
-<button id="hamburger-btn" class="navbar-toggler navbar-dark">
-    <span class="navbar-toggler-icon"></span>
-</button>
+<nav>
+    <ul class="uppercase">
+        <li><a href="{{ route('home') }}">Programmazione</a></li>
+        <li><a href="{{ route('dove-siamo') }}">Come raggiungerci</a></li>
+        <li><a href="{{ route('info-sala') }}">Informazioni Sala</a></li>
+        <li><a href="{{ route('biglietti-promo') }}">Biglietti e promo</a></li>
+        <li><a href="{{ route('contatti') }}">Contatti</a></li>
+    </ul>
+</nav>
 
-<div id="sidebar-logo">
-    <img src="/images/logo.png" width="45" alt="Logo CineTeatro">
-</div>
-
-<div id="sidebar">
-    <a href="{{ route('home') }}">Home</a>
-    <a href="{{ route('contatti') }}">Contatti e Mappa</a>
-    <a href="{{ route('info') }}">Info e Documenti</a>
-    <a href="{{ route('lunessai') }}">Lunessai</a>
+{{--
     <a href="{{ route('storico') }}">Storico</a>
-</div>
+    <a href="{{ route('lunessai') }}">Lunessai</a>
+--}}
