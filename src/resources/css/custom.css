@@ -159,7 +159,7 @@ footer {
     container-type: inline-size;
 }
 
-.card {
+.event-card {
     display: grid;
     grid-template-columns: clamp(170px, calc(70px + 15cqi), 250px) 1fr;
     gap: var(--size-3);
@@ -173,7 +173,7 @@ footer {
     .image-container {
         text-align: center;
 
-        .wannabe-image {
+        img {
             aspect-ratio: 200 / 285;
             background-color: aquamarine;
         }
