@@ -10,7 +10,6 @@ import "bootstrap";
 window.addEventListener("load", () => manageMenu());
 
 function manageMenu() {
-
     const backdropCloseListener = (e) => {
         if (e.target && e.target.tagName === "BODY") {
             closeMenu();

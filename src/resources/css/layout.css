@@ -3,6 +3,11 @@
     align-items: center;
     gap: var(--size-2);
 
+    img {
+        aspect-ratio: 3 / 2;
+        object-fit: contain;
+    }
+
     p {
         line-height: 1;
         font-size: 20px;

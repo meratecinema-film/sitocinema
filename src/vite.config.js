@@ -1,17 +1,24 @@
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import { bunny } from "laravel-vite-plugin/fonts";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.js'],
+            input: [
+                "resources/css/bootstrap.css",
+                "resources/css/reset.css",
+                "resources/css/custom.css",
+                "resources/css/layout.css",
+                "resources/js/app.js",
+            ],
             refresh: true,
             fonts: [
-                bunny('Afacad Flux', {
+                bunny("Afacad Flux", {
                     weights: [300, 400, 500, 600, 700],
-                    fallbacks: ['system-ui', 'sans-serif'],
+                    fallbacks: ["system-ui", "sans-serif"],
+                    preload: [{ weight: 300 }, { weight: 400 }],
                 }),
             ],
         }),
@@ -19,15 +26,15 @@ export default defineConfig({
     ],
 
     server: {
-        host: '0.0.0.0',     // ← OBBLIGATORIO in Docker
-        port: 5173,          // ← Forziamo la porta corretta
-        strictPort: true,    // ← Non usare porte alternative
+        host: "0.0.0.0", // ← OBBLIGATORIO in Docker
+        port: 5173, // ← Forziamo la porta corretta
+        strictPort: true, // ← Non usare porte alternative
         hmr: {
-            host: 'localhost', // ← Forza IPv4
+            host: "localhost", // ← Forza IPv4
             port: 5173,
         },
         watch: {
-            ignored: ['**/storage/framework/views/**'],
+            ignored: ["**/storage/framework/views/**"],
         },
     },
 });
