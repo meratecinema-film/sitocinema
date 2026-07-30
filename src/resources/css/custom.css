@@ -99,6 +99,12 @@ main p {
     max-width: 72ch;
 }
 
+.text-block {
+    p + p {
+        margin-block-start: var(--size-3);
+    }
+}
+
 /** HEADER */
 header {
     /*padding: var(--size-4);*/

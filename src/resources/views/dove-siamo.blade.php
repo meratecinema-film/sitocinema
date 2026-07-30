@@ -5,8 +5,12 @@
 @section('content')
     <div class="content-wrapper">
         <h1 class="h1">Come raggiungerci</h1>
-        <p>Il Cineteatro Alessandro Manzoni si trova in Via Papa Giovanni XXIII, 23, a Merate, in provincia di Lecco.</p>
-        <p>Disponibilità di parcheggio in zona</p>
+        <div class="text-block">
+            <p>Il Cineteatro Alessandro Manzoni si trova in Via Papa Giovanni XXIII, civico 23, a Merate, in provincia di
+                Lecco, situato all'interno dell'Oratorio San Giovanni Bosco - San Filippo Neri.</p>
+            <p>C'è ampia disponibilità di parcheggio in zona: sia all'interno della struttura, a disposizione
+                anche di altre eventuali attività oratoriane, sia all'esterno lungo la stessa via.</p>
+        </div>
 
         <div class="map" style="margin-block: var(--size-3);">
             <iframe

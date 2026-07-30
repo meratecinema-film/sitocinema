@@ -2,11 +2,11 @@
 
     $tickets = [
         [
-            'label' => 'Intero (festivo)',
+            'label' => 'Intero festivo',
             'price' => 7,
         ],
         [
-            'label' => 'Intero (prefestivo)',
+            'label' => 'Intero prefestivo',
             'price' => 6,
         ],
         [
@@ -17,11 +17,11 @@
 
     $ticketsLunessai = [
         [
-            'label' => 'Intero (serale)',
+            'label' => 'Intero serale',
             'price' => 5,
         ],
         [
-            'label' => 'Intero (pomeridiano) e ridotto',
+            'label' => 'Intero pomeridiano e ridotto',
             'price' => 4,
         ],
     ];
