@@ -82,9 +82,6 @@
         </div>
     @else
         <div class="content-wrapper">
-            <img class="events-placeholder" src="https://images.unsplash.com/photo-1542204165-65bf26472b9b" alt="">
-            {{-- <img class="events-placeholder" src="https://images.unsplash.com/photo-1538152911114-73f1aa6d6128" alt=""> --}}
-
             <p>
                 @if ($placeholderText)
                     {{ $placeholderText }}
@@ -97,6 +94,8 @@
                 @endif
             </p>
 
+            <img class="events-placeholder" src="https://images.unsplash.com/photo-1542204165-65bf26472b9b" alt="">
+            {{-- <img class="events-placeholder" src="https://images.unsplash.com/photo-1538152911114-73f1aa6d6128" alt=""> --}}
         </div>
     @endif
 
