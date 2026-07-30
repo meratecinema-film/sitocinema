@@ -13,6 +13,7 @@
                 @endforeach
             </ul>
         @endif
+        <p>@dump($films->toArray())</p>
     </div>
     <button class="btn btn-primary">Test</button>
 @endsection
