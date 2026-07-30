@@ -88,6 +88,13 @@ main p {
     }
 }
 
+.button-link {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
 
 /** UTILS */
 .wrapper {
@@ -153,6 +160,13 @@ footer {
 }
 
 /** HOME / LOCANDINA */
+.events-placeholder {
+    aspect-ratio: 4;
+    object-fit: cover;
+    margin-block: var(--size-3);
+    border-radius: var(--size-1);
+}
+
 .events {
     --max-col-width: 375px;
     display: grid;
@@ -179,9 +193,9 @@ footer {
     .image-container {
         text-align: center;
 
-        img {
+        .poster-placeholder {
             aspect-ratio: 200 / 285;
-            background-color: aquamarine;
+            background-color: var(--clr-neutral-200);
         }
 
         .link {
@@ -210,6 +224,11 @@ footer {
 
         .day p {
             line-height: 1.2;
+        }
+
+        .show-more-toggle {
+            line-height: 1.2;
+            margin-block-start: var(--size-2);
         }
     }
 }

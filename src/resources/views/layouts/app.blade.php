@@ -18,6 +18,7 @@
 
     {{-- Vite: CSS + JS --}}
     @vite(['resources/css/bootstrap.css', 'resources/css/reset.css', 'resources/css/custom.css', 'resources/css/layout.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body>
@@ -43,6 +44,7 @@
         </div>
     </div>
 
+    @livewireScripts
 </body>
 
 </html>
