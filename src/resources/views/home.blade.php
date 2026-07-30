@@ -4,7 +4,15 @@
 
 @section('content')
     <div>
-        homepage. {{ $test}}
+        @if ($films->isEmpty())
+            <p>No films found.</p>
+        @else
+            <ul>
+                @foreach ($films as $film)
+                    <li>{{ $film->title }}</li>
+                @endforeach
+            </ul>
+        @endif
     </div>
     <button class="btn btn-primary">Test</button>
 @endsection
