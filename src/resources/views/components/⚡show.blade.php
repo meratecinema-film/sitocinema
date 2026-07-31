@@ -1,68 +1,62 @@
 <?php
 
+use Carbon\Carbon;
 use Livewire\Component;
-use Livewire\Attributes\Computed;
 
 new class extends Component {
     public $event;
+
     public $expanded = false;
     public $maxDayCount = 3;
-    public $type;
-    public $link;
+
+    public $posterImage;
+    public $trailerLink;
     public $linkLabel;
+    public $eventTypeId;
+    public $eventTypeLabel;
 
     // dates grouped by day
     public $groupedDates = [];
+    public $dateList = [];
 
-    #[Computed]
-    public function dateList()
+    public function updateDateList()
     {
-        setlocale(LC_ALL, 'IT.utf8');
-
-        return $this->expanded ? $this->groupedDates : array_slice($this->groupedDates, 0, $this->maxDayCount);
+        $this->dateList = $this->expanded ? $this->groupedDates : array_slice($this->groupedDates, 0, $this->maxDayCount);
     }
 
     public function toggle()
     {
         $this->expanded = !$this->expanded;
+        $this->updateDateList();
     }
 
     public function mount()
     {
-        setlocale(LC_ALL, 'IT.utf8');
+        $this->trailerLink = $this->event->trailer ?? '';
+        $this->posterImage = $this->event->poster ?? '';
 
-        $this->type = $this->event['type'] ?? '';
-        $this->link = $this->event['link'] ?? '';
-        $this->linkLabel = $this->type === 'proiezione' || $this->type === 'lunessai' ? 'trailer e sinossi' : 'informazioni';
+        $type = $this->event->eventType;
+        $this->eventTypeId = $type->id ?? 0;
+        $this->eventTypeLabel = $type->name ?? '';
+        $this->linkLabel = $this->eventTypeId === 1 || $this->eventTypeId === 2 ? 'trailer e sinossi' : 'informazioni';
 
-        $dates = $this->event['dates'];
-        // filter dates, keep only future dates
-        $dates = array_filter($dates, function ($d) {
-            return $this->futureDates($d);
-        });
+        $shows = $this->event->shows;
 
-        sort($dates);
-
-        foreach ($dates as $dateString) {
-            $date = new DateTime($dateString);
+        foreach ($this->event->shows as $show) {
+            $date = new DateTime($show->date);
             $dayKey = $date->format('Y-m-d'); // unique day key
-            $time = $date->format('H:i'); // time
+            $time = $show['time']; // time
 
             if (!isset($this->groupedDates[$dayKey])) {
                 $this->groupedDates[$dayKey] = [
-                    'day' => $date,
+                    'day' => Carbon::parse($date),
                     'times' => [],
                 ];
             }
             $this->groupedDates[$dayKey]['times'][] = $time;
         }
-    }
 
-    private function futureDates($d)
-    {
-        $today = now();
-
-        return $d > $today;
+        $this->updateDateList();
     }
 };
 ?>
@@ -70,29 +64,26 @@ new class extends Component {
 
 <div class="event-card" x-data="{ event: @js($event) }">
     <div class="image-container">
-        <template x-if="event.image">
-            <img :src="event.image" alt="">
-        </template>
-        <template x-if="!event.image">
+        @if ($posterImage)
+            <img src="{{ $posterImage }}" alt="">
+        @else
             <div class="poster-placeholder"></div>
-        </template>
-        @if ($link)
-            <a href="{{ $link }}" class="link" target="_blank">{{ $linkLabel }}</a>
+        @endif
+        @if ($trailerLink)
+            <a href="{{ $trailerLink }}" class="link" target="_blank">{{ $linkLabel }}</a>
         @endif
     </div>
     <div class="info">
-        <h2 class="h2" x-text="event.title"></h2>
-        <p class="tag uppercase" x-text="event.type"></p>
+        <h2 class="h2">{{ $event->title }}</h2>
+        <p class="tag uppercase">{{ $eventTypeLabel }}</p>
 
         @foreach ($this->dateList as $group)
-            <div class="day">
+            <div wire:key="day-{{ $loop->index }}" class="day">
                 <p class="bold">
-                    {{ strftime('%A', $group['day']->getTimestamp()) }}
-                    {{ $group['day']->format('j') }}
-                    {{ strftime('%B', $group['day']->getTimestamp()) }}
+                    {{ $group['day']->locale('it')->isoFormat('dddd D MMMM') }}
                 </p>
                 @foreach ($group['times'] as $time)
-                    <p>ore {{ $time }}</p>
+                    <p wire:key="time-{{ $time }}">ore {{ $time }}</p>
                 @endforeach
             </div>
         @endforeach
@@ -107,5 +98,6 @@ new class extends Component {
                 @endif
             </button>
         @endif
+
     </div>
 </div>

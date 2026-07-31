@@ -218,7 +218,7 @@ footer {
         }
 
         .day:first-of-type {
-            margin-block-start: var(--size-4);
+            margin-block-start: var(--size-6);
         }
 
         .day p {

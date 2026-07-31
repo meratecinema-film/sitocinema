@@ -73,14 +73,7 @@
         <p>@dump($films->toArray())</p>
     </div>
 
-
-    @if (count($events))
-        <div class="events">
-            @foreach ($events as $event)
-                @livewire('show', ['event' => $event], key($loop->index))
-            @endforeach
-        </div>
-    @else
+    @if ($films->isEmpty())
         <div class="content-wrapper">
             <p>
                 @if ($placeholderText)
@@ -96,6 +89,13 @@
 
             <img class="events-placeholder" src="https://images.unsplash.com/photo-1542204165-65bf26472b9b" alt="">
             {{-- <img class="events-placeholder" src="https://images.unsplash.com/photo-1538152911114-73f1aa6d6128" alt=""> --}}
+        </div>
+    @else
+        <div class="events">
+
+            @foreach ($films as $film)
+                @livewire('show', ['event' => $film], key($film->id))
+            @endforeach
         </div>
     @endif
 
