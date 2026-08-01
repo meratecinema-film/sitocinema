@@ -66,7 +66,7 @@
         @else
             <ul>
                 @foreach ($films as $film)
-                    <li>{{ $film->title }}</li>
+                    <li>{{ $film->Ftitle }} {{ $film->Sdate }} {{ $film->Stime }}</li>
                 @endforeach
             </ul>
         @endif

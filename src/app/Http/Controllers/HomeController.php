@@ -2,74 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Film;
 use Illuminate\Support\Carbon;
+use App\Models\Show;
 
 class HomeController extends Controller
 {
+     
     public function index()
     {
-        //  $films = Film::all();
-        $today = Carbon::today();
-
-        $films = Film::query()
-            // 1. Seleziona SOLO le colonne della tabella films
-            ->select([
-                'films.id',
-                'films.title',
-                'films.description',
-                'films.poster',
-                'films.eventtype_id',
-                'films.trailer',
-                'films.year',
-                'films.visible_from',
-                'films.visible_until',
-                'films.duration',
-            ])
-            
-            // 2. Aggiunge la sottoquery come colonna EXTRA (addSelect)
-            ->addSelect([
-                'first_show_at' => function ($query) use ($today) {
-                    $query->from('shows')
-                        // DENTRO QUESTA SUBQUERY va estratto SOLO il CONCAT (1 colonna!)
-                        ->selectRaw("CONCAT(date, ' ', time)")
-                        ->whereColumn('shows.film_id', 'films.id')
-                        ->where('shows.date', '>=', $today)
-                        ->orderBy('shows.date', 'asc')
-                        ->orderBy('shows.time', 'asc')
-                        ->limit(1);
-                }
-            ])
-
-            // 3. Filtra solo i film con spettacoli futuri
-            ->whereHas('shows', function ($query) use ($today) {
-                $query->where('date', '>=', $today);
+        $films = DB::table('view_prossimifilm as VV')
+            ->join('films as F', 'VV.id', '=', 'F.id')
+            ->join('eventtypes as ET', 'F.eventtype_id', '=', 'ET.id')
+            ->leftJoin('shows as S', function ($join) {
+                $join->on('F.id', '=', 'S.film_id')
+                    ->whereRaw('COALESCE(S.date, NOW()) >= NOW()');
             })
-            
-            // 4. Ordina e limita
-            ->orderBy('first_show_at', 'asc')
-            ->take(6)
-            
-            // 5. Eager Loading con campi espliciti per le relazioni
-            ->with([
-                'eventType' => function ($query) {
-                    $query->select(['id', 'name']);
-                },
-                'shows' => function ($query) use ($today) {
-                    $query->select(['id', 'film_id', 'showspec_id', 'date', 'time'])
-                          ->where('date', '>=', $today)
-                          ->orderBy('date', 'asc')
-                          ->orderBy('time', 'asc')
-                          ->with(['showSpec' => function ($query) {
-                              $query->select(['id', 'name']);
-                          }]);
-                }
+            ->leftJoin('showspecs as SS', 'S.showspec_id', '=', 'SS.id')
+            ->select([
+                'ET.name as ETname',
+                'ET.description as ETdescription',
+                'ET.color as ETcolor',
+
+                'VV.refdate',
+
+                'F.title as Ftitle',
+                'F.description as Fdescription',
+                'F.duration as Fduration',
+                'F.poster as Fposter',
+                'F.trailer as Ftrailer',
+                'F.year as Fyear',
+
+                'S.date as Sdate',
+                'S.time as Stime',
+
+                'SS.name as SSname',
+                'SS.description as SSdescription',
+                'SS.icon as SSicon',
             ])
+            ->orderBy('VV.refdate')
+            ->orderBy('S.date')
+            ->orderBy('S.time')
             ->get();
 
-        return view('home', compact('films') );
-        
+
+
+        return view('home', compact('films'));
     }
 
     public function single(Request $request)
