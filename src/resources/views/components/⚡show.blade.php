@@ -17,18 +17,7 @@ new class extends Component {
 
     // dates grouped by day
     public $groupedDates = [];
-    public $dateList = [];
-
-    public function updateDateList()
-    {
-        $this->dateList = $this->expanded ? $this->groupedDates : array_slice($this->groupedDates, 0, $this->maxDayCount);
-    }
-
-    public function toggle()
-    {
-        $this->expanded = !$this->expanded;
-        $this->updateDateList();
-    }
+    public $allDates = [];
 
     public function mount()
     {
@@ -45,59 +34,67 @@ new class extends Component {
         foreach ($this->event->shows as $show) {
             $date = new DateTime($show->date);
             $dayKey = $date->format('Y-m-d'); // unique day key
+            $day = Carbon::parse($date)->locale('it')->isoFormat('dddd D MMMM');
             $time = $show['time']; // time
 
             if (!isset($this->groupedDates[$dayKey])) {
                 $this->groupedDates[$dayKey] = [
-                    'day' => Carbon::parse($date),
+                    'day' => $day,
                     'times' => [],
                 ];
             }
             $this->groupedDates[$dayKey]['times'][] = $time;
         }
 
-        $this->updateDateList();
+        $this->allDates = array_values($this->groupedDates);
     }
 };
 ?>
 
 
-<div class="event-card" x-data="{ event: @js($event) }">
+<div class="event-card" x-data="{
+    event: @js($event),
+    allDates: @js($allDates),
+    maxDayCout: @js($maxDayCount),
+    exp: false,
+    get dateList() {
+        return this.exp ? this.allDates : this.allDates.slice(0, this.maxDayCout);
+    },
+}">
     <div class="image-container">
         @if ($posterImage)
             <img src="{{ $posterImage }}" alt="">
         @else
             <div class="poster-placeholder"></div>
         @endif
+
         @if ($trailerLink)
             <a href="{{ $trailerLink }}" class="link" target="_blank">{{ $linkLabel }}</a>
         @endif
     </div>
     <div class="info">
-        <h2 class="h2">{{ $event->title }}</h2>
         <p class="tag uppercase">{{ $eventTypeLabel }}</p>
+        <h2 class="h2">{{ $event->title }}</h2>
 
-        @foreach ($this->dateList as $group)
-            <div wire:key="day-{{ $loop->index }}" class="day">
-                <p class="bold">
-                    {{ $group['day']->locale('it')->isoFormat('dddd D MMMM') }}
-                </p>
-                @foreach ($group['times'] as $time)
-                    <p wire:key="time-{{ $time }}">ore {{ $time }}</p>
-                @endforeach
+        <template x-for="date in dateList">
+            <div class="day">
+                <p x-text="date.day" class="bold"></p>
+                <template x-for="time in date.times">
+                    <p>ore <span x-text="time"></span></p>
+                </template>
             </div>
-        @endforeach
+        </template>
 
-
-        @if (count($groupedDates) > $maxDayCount)
-            <button wire:click="toggle" class="show-more-toggle button-link text-small">
-                @if ($expanded)
-                    <span>nascondi</span>
-                @else
+        <template x-if="allDates.length > maxDayCout">
+            <button x-on:click="exp = !exp" class="show-more-toggle button-link text-small">
+                <template x-if="!exp">
                     <span>mostra altre date</span>
-                @endif
+                </template>
+                <template x-if="exp">
+                    <span>nascondi</span>
+                </template>
             </button>
-        @endif
+        </template>
 
     </div>
 </div>
