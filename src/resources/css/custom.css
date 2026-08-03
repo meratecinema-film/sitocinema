@@ -67,6 +67,10 @@ main p {
     font-weight: 700;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .uppercase {
     text-transform: uppercase;
 }
@@ -230,6 +234,16 @@ footer {
             margin-block-start: var(--size-2);
         }
     }
+}
+
+/** INFO PAGE  */
+.cinema-images {
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--size-4);
+    max-width: 400px;
+    margin: var(--size-2) auto;
+    align-items: center;
 }
 
 /** TICKET and PROMO PAGE  */
