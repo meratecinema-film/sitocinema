@@ -94,7 +94,7 @@
         <div class="events">
 
             @foreach ($films as $film)
-                @livewire('show', ['event' => $film], key($film->id))
+                {{-- @livewire('show', ['event' => $film], key($loop->index)) --}}
             @endforeach
         </div>
     @endif
