@@ -34,8 +34,15 @@ export default defineConfig({
             port: 5173,
         },
         watch: {
-            //usePolling: true, // react to CSS changes, warning: increase CPU usage
-            ignored: ["**/storage/framework/views/**"],
+            usePolling: true, // react to code changes in realtime
+            interval: 1000,
+            ignored: [
+                "**/node_modules/**",
+                "**/vendor/**",
+                "**/storage/**",
+                "**/tests/**",
+                "**/.git/**",
+            ],
         },
     },
 });
