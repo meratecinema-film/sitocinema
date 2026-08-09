@@ -65,9 +65,31 @@
             <p>No films found.</p>
         @else
             <ul>
-                @foreach ($films as $film)
-                    <li>{{ $film['film']['title'] }} {{-- $film->Sdate }} {{ $film->Stime --}}</li>
-                @endforeach
+            @foreach($films as $film)
+
+                <h2>{{ $film['film']['title'] }}</h2>
+                <p>{{ $film['film']['description'] }}</p>
+
+                <strong>Event type:</strong> {{ $film['eventtype']['name'] }}
+
+                {{-- Ciclo delle date --}}
+                @if(!empty($film['dates']))
+                    <ul>
+                        @foreach($film['dates'] as $d)
+                            <li>
+                                {{ $d['date'] }} {{ $d['time'] }}
+                                @if(!empty($d['spec']))
+                                    — {{ $d['spec']['name'] }}
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>Nessuna data disponibile.</p>
+                @endif
+
+            @endforeach
+
             </ul>
         @endif
         
