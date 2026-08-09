@@ -66,11 +66,13 @@
         @else
             <ul>
                 @foreach ($films as $film)
-                    <li>{{ $film->Ftitle }} {{ $film->Sdate }} {{ $film->Stime }}</li>
+                    <li>{{ $film['film']['title'] }} {{-- $film->Sdate }} {{ $film->Stime --}}</li>
                 @endforeach
             </ul>
         @endif
-        <p>@dump($films->toArray())</p>
+        
+        <p>@dump($films->toArray())</p> 
+
     </div>
 
     @if ($films->isEmpty())
