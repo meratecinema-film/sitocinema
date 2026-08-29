@@ -7,12 +7,11 @@ new class extends Component {
     public $event;
 
     public $expanded = false;
-    public $maxDayCount = 3;
+    public $maxDaysShownByDefault = 3;
 
     public $posterImage;
     public $trailerLink;
     public $linkLabel;
-    public $eventTypeId;
     public $eventTypeLabel;
 
     // dates grouped by day
@@ -21,21 +20,19 @@ new class extends Component {
 
     public function mount()
     {
-        $this->trailerLink = $this->event->trailer ?? '';
-        $this->posterImage = $this->event->poster ?? '';
+        $this->trailerLink = $this->event['film']['trailer'] ?? '';
+        $this->posterImage = $this->event['film']['poster'] ?? '';
 
-        $type = $this->event->eventType;
-        $this->eventTypeId = $type->id ?? 0;
-        $this->eventTypeLabel = $type->name ?? '';
-        $this->linkLabel = $this->eventTypeId === 1 || $this->eventTypeId === 2 ? 'trailer e sinossi' : 'informazioni';
+        $type = $this->event['eventtype'];
+        $this->eventTypeLabel = $type['name'] ?? '';
+        $this->linkLabel = $type['name'] === 'Lunessai' || $type['name'] === 'Film' ? 'trailer e sinossi' : 'informazioni';
 
-        $shows = $this->event->shows;
-
-        foreach ($this->event->shows as $show) {
-            $date = new DateTime($show->date);
+        foreach ($this->event['dates'] as $show) {
+            $date = new DateTime($show['date'] . ' ' . $show['time']);
             $dayKey = $date->format('Y-m-d'); // unique day key
             $day = Carbon::parse($date)->locale('it')->isoFormat('dddd D MMMM');
-            $time = $show['time']; // time
+            $time = Carbon::parse($date)->locale('it')->isoFormat('HH:mm');
+            $special = $show['spec']['name'] ?? '';
 
             if (!isset($this->groupedDates[$dayKey])) {
                 $this->groupedDates[$dayKey] = [
@@ -43,7 +40,10 @@ new class extends Component {
                     'times' => [],
                 ];
             }
-            $this->groupedDates[$dayKey]['times'][] = $time;
+            $this->groupedDates[$dayKey]['times'][] = [
+                'hour' => $time,
+                'special' => $special,
+            ];
         }
 
         $this->allDates = array_values($this->groupedDates);
@@ -55,10 +55,10 @@ new class extends Component {
 <div class="event-card" x-data="{
     event: @js($event),
     allDates: @js($allDates),
-    maxDayCout: @js($maxDayCount),
+    maxDefaultDates: @js($maxDaysShownByDefault),
     exp: false,
     get dateList() {
-        return this.exp ? this.allDates : this.allDates.slice(0, this.maxDayCout);
+        return this.exp ? this.allDates : this.allDates.slice(0, this.maxDefaultDates);
     },
 }">
     <div class="image-container">
@@ -73,19 +73,37 @@ new class extends Component {
         @endif
     </div>
     <div class="info">
-        <p class="tag uppercase">{{ $eventTypeLabel }}</p>
-        <h2 class="h2">{{ $event->title }}</h2>
+        <p class="tag">
+            <span class="uppercase">{{ $eventTypeLabel }}</span>
+            <template x-if="event.film.duration">
+                <span>- {{ $event['film']['duration'] }} minuti</span>
+            </template>
+        </p>
+        <h2 class="h2">{{ $event['film']['title'] }}</h2>
+
+        <template x-if="!dateList.length">
+            <div class="day">
+                <p class="uppercase">Prossimamente</p>
+            </div>
+        </template>
 
         <template x-for="date in dateList">
             <div class="day">
                 <p x-text="date.day" class="bold"></p>
                 <template x-for="time in date.times">
-                    <p>ore <span x-text="time"></span></p>
+                    <p>
+                        ore <span x-text="time.hour"></span>
+                        <template x-if="time.special">
+                            <span>
+                                - <span class="italic" x-text="time.special"></span>
+                            </span>
+                        </template>
+                    </p>
                 </template>
             </div>
         </template>
 
-        <template x-if="allDates.length > maxDayCout">
+        <template x-if="allDates.length > maxDefaultDates">
             <button x-on:click="exp = !exp" class="show-more-toggle button-link text-small">
                 <template x-if="!exp">
                     <span>mostra altre date</span>
