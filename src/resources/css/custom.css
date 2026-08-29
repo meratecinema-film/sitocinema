@@ -75,6 +75,10 @@ main p {
     text-transform: uppercase;
 }
 
+.lowercase {
+    text-transform: lowercase;
+}
+
 .text-button {
     display: inline-flex;
     align-items: center;
@@ -141,6 +145,10 @@ header {
         list-style: none;
         padding: 0;
         text-align: end;
+
+        li.active {
+            font-weight: 700;
+        }
     }
 }
 
