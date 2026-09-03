@@ -22,11 +22,15 @@
                 @if ($placeholderText)
                     {{ $placeholderText }}
                 @else
+                    Al momento non ci sono eventi in programma, torna a trovarci o seguici sui nostri canali social per
+                    tutte le novità!
+                    {{--
                     Al momento la programmazione è sospesa, grazie per aver preso parte alla stagione di spettacoli,
                     proiezioni
                     ed eventi.
                     Riprenderemo a settembre con la nuova stagione, torna a trovarci e seguici sui nostri canali social per
                     tutte le novità!
+                    --}}
                 @endif
             </p>
 

@@ -7,11 +7,9 @@
 
     <title>Cineteatro Manzoni Merate - @yield('title')</title>
 
-    <!-- TBD -->
     <meta property="og:title" content="Cineteatro Manzoni Merate" />
-    <meta property="og:image" content={{ asset('/logo.png') }} />
-    <meta property="og:logo" content={{ asset('/favicon.ico') }} />
-
+    <meta property="og:image" content={{ asset('/images/cineteatro-manzoni-cover.png') }} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     {{-- Font --}}
     @fonts

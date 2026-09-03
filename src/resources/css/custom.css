@@ -35,7 +35,7 @@ h1,
     font-weight: 400;
     margin-block-end: 0.5em;
     margin-block-start: var(--size-1);
-    text-box-trim: trim-start;
+    text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
 }
 
@@ -184,6 +184,8 @@ footer {
 
 .events {
     --max-col-width: 375px;
+
+    padding-block-start: var(--size-2);
     display: grid;
     gap: var(--size-6);
     grid-template-columns: repeat(
@@ -252,6 +254,10 @@ footer {
     max-width: 400px;
     margin: var(--size-2) auto;
     align-items: center;
+}
+
+.docs {
+    margin-block-start: var(--size-5);
 }
 
 /** TICKET and PROMO PAGE  */
